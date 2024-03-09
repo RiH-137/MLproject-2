@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup,find_packages
 from typing import List
 
 
@@ -8,11 +8,11 @@ from typing import List
 
 #declaring variable for setup function
 PROJECT_NAME="housing_preditor"
-VERSION="0.0.1"
+VERSION="0.0.3"
 AUTHOR="Rishi Ranjan"
 DESCRIPTION="This is house prediction project."
 REQUIREMENT_FILE_NAME="requirements.txt"
-
+HYPHEN_E_DOT = "-e ."
 
 #the below function read the requirements.txt file
 def get_requirements_list()->List[str]:
@@ -24,7 +24,11 @@ def get_requirements_list()->List[str]:
         of libraries mentioned in requirements.txt file
     '''
     with open(REQUIREMENT_FILE_NAME) as requirement_file:
-        return requirement_file.readlines()
+        requirement_list = requirement_file.readlines()
+        requirement_list = [requirement_name.replace("\n", "") for requirement_name in requirement_list]
+        if HYPHEN_E_DOT in requirement_list:
+            requirement_list.remove(HYPHEN_E_DOT)
+        return requirement_list
 
 
 
@@ -32,9 +36,10 @@ def get_requirements_list()->List[str]:
 
 
 setup(name=PROJECT_NAME, version=VERSION, author=AUTHOR, description=DESCRIPTION,
-      packages=["housing"], install_requires=get_requirements_list())
+      packages=find_packages(), #["housing"]
+      install_requires=get_requirements_list())
 
 
 
 if __name__=="__main__":
-    print(get_requirements_lis t())
+    print(get_requirements_list())
